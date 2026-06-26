@@ -12,6 +12,7 @@ Site institucional desenvolvido em Node.js com padrão MVC para o escritório Ca
 ## Como rodar
 
 ```bash
+mkdir database
 npm install
 npm run dev
 ```
@@ -24,18 +25,6 @@ Rota: `/auth/login`
 
 - **E-mail:** admin@caioricson.com
 - **Senha:** admin123
-
-## Estrutura MVC
-
-```
-src/
-├── controllers/   # Lógica das rotas
-├── models/        # Banco de dados (SQLite)
-├── views/         # Templates EJS
-│   ├── partials/  # Header e footer
-│   └── admin/     # Painel administrativo
-└── public/        # CSS e JS estáticos
-```
 
 ## Funcionalidades
 
