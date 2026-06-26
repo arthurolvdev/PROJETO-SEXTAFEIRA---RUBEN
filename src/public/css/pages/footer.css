@@ -1,0 +1,47 @@
+/* ============================================================
+   FOOTER — Rodapé com colunas, links e copyright
+   ============================================================ */
+
+.footer {
+  background: var(--preto-suave);
+  border-top: 1px solid rgba(201, 168, 76, 0.15);
+  padding: 60px 0 0;
+}
+.footer-inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 60px;
+  padding-bottom: 48px;
+}
+.footer-logo {
+  font-family: var(--fonte-titulo);
+  font-size: 20px;
+  color: var(--dourado);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.footer-desc { font-size: 14px; color: var(--cinza); }
+.footer-titulo {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dourado);
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li {
+  font-size: 14px;
+  color: var(--cinza);
+  margin-bottom: 10px;
+}
+.footer-bottom {
+  border-top: 1px solid rgba(201, 168, 76, 0.1);
+  padding: 20px 0;
+  text-align: center;
+}
+.footer-bottom p { font-size: 12px; color: var(--cinza-escuro); }
+
+@media (max-width: 900px) {
+  .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+}

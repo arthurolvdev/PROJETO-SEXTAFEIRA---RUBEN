@@ -1,0 +1,22 @@
+/* ============================================================
+   404 — Página de erro
+   Usado em: 404.ejs
+   ============================================================ */
+
+.pagina-erro { padding: 140px 0 100px; text-align: center; }
+
+.erro-codigo {
+  font-family: var(--fonte-titulo);
+  font-size: 100px;
+  color: var(--dourado);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.erro-inner h2 {
+  font-family: var(--fonte-titulo);
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+.erro-inner p { color: var(--cinza); margin-bottom: 32px; }

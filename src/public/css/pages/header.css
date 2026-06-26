@@ -1,0 +1,78 @@
+/* ============================================================
+   HEADER — Navbar fixa, logo, navegação, menu mobile
+   ============================================================ */
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(10, 10, 10, 0.95);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+  backdrop-filter: blur(8px);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.logo-nome {
+  font-family: var(--fonte-titulo);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dourado);
+}
+.logo-sub {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cinza);
+}
+
+.nav {
+  display: flex;
+  gap: 36px;
+}
+.nav a {
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--branco-suave);
+  transition: color 0.2s;
+}
+.nav a:hover { color: var(--dourado); }
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--dourado);
+  font-size: 22px;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background: var(--preto-suave);
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    gap: 20px;
+  }
+  .nav.open { display: flex; }
+  .menu-toggle { display: block; }
+}

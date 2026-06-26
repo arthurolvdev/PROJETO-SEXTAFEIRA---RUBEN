@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Admin | Caio Ricson Advocacia</title>
+  <link rel="stylesheet" href="/css/pages/base.css">
+  <link rel="stylesheet" href="/css/pages/admin.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+  <aside class="admin-sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-nome">Caio Ricson</span>
+      <span class="logo-sub">Painel</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="/admin" class="sidebar-link ativo">Serviços</a>
+      <a href="/" class="sidebar-link" target="_blank">Ver Site</a>
+    </nav>
+    <form action="/auth/logout" method="POST" class="sidebar-logout">
+      <button type="submit" class="btn-logout">Sair</button>
+    </form>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 class="admin-titulo">Gerenciar Serviços</h1>
+      <span class="admin-usuario">Olá, <%= userName %></span>
+    </div>
+
+    <div class="admin-acoes">
+      <a href="/admin/servicos/novo" class="btn btn-primario">+ Novo Serviço</a>
+      <form action="/admin/servicos/buscar" method="GET" class="busca-form">
+        <input type="text" name="q" placeholder="Buscar serviço..." value="<%= busca %>" class="busca-input">
+        <button type="submit" class="btn btn-secundario">Buscar</button>
+        <% if (busca) { %>
+          <a href="/admin" class="btn-limpar">Limpar</a>
+        <% } %>
+      </form>
+    </div>
+
+    <% if (busca) { %>
+      <p class="busca-resultado">Resultados para "<%= busca %>": <%= servicos.length %> encontrado(s)</p>
+    <% } %>
+
+    <div class="admin-tabela-wrap">
+      <table class="admin-tabela">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Área</th>
+            <th>Descrição</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (servicos.length === 0) { %>
+            <tr><td colspan="4" class="sem-resultados">Nenhum serviço encontrado.</td></tr>
+          <% } %>
+          <% servicos.forEach(s => { %>
+          <tr>
+            <td><strong><%= s.titulo %></strong></td>
+            <td><span class="badge-area"><%= s.area %></span></td>
+            <td class="td-desc"><%= s.descricao.substring(0, 80) %>...</td>
+            <td class="td-acoes">
+              <a href="/admin/servicos/editar/<%= s.id %>" class="btn-tabela btn-editar">Editar</a>
+              <form action="/admin/servicos/excluir/<%= s.id %>" method="POST" style="display:inline" onsubmit="return confirm('Excluir este serviço?')">
+                <button type="submit" class="btn-tabela btn-excluir">Excluir</button>
+              </form>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="admin-contatos">
+      <h2 class="admin-subtitulo">Mensagens Recebidas (<%= contatos.length %>)</h2>
+      <% if (contatos.length === 0) { %>
+        <p class="sem-resultados">Nenhuma mensagem recebida ainda.</p>
+      <% } else { %>
+        <div class="contatos-lista">
+          <% contatos.forEach(c => { %>
+          <div class="contato-card">
+            <div class="contato-card-header">
+              <strong><%= c.nome %></strong>
+              <span class="contato-data"><%= new Date(c.recebido_em).toLocaleDateString('pt-BR') %></span>
+            </div>
+            <p class="contato-email"><%= c.email %> <% if (c.telefone) { %> · <%= c.telefone %><% } %></p>
+            <p class="contato-msg"><%= c.mensagem %></p>
+          </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+  </main>
+</body>
+</html>

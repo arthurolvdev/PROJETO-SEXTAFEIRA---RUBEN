@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Caio Ricson Advocacia</title>
+  <link rel="stylesheet" href="/css/pages/base.css">
+  <link rel="stylesheet" href="/css/pages/admin.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body class="login-body">
+  <div class="login-container">
+    <div class="login-box">
+      <div class="login-logo">
+        <span class="logo-nome">Caio Ricson</span>
+        <span class="logo-sub">Advocacia — Painel</span>
+      </div>
+
+      <% if (erro) { %>
+        <div class="alerta alerta-erro"><%= erro %></div>
+      <% } %>
+
+      <form action="/auth/login" method="POST" class="contato-form">
+        <div class="campo">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" required placeholder="admin@caioricson.com">
+        </div>
+        <div class="campo">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" name="senha" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-primario btn-full">Entrar</button>
+      </form>
+
+      <p class="login-voltar"><a href="/">← Voltar ao site</a></p>
+    </div>
+  </div>
+</body>
+</html>

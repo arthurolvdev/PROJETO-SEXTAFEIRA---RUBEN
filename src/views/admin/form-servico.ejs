@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= servico ? 'Editar' : 'Novo' %> Serviço | Caio Ricson</title>
+  <link rel="stylesheet" href="/css/pages/base.css">
+  <link rel="stylesheet" href="/css/pages/admin.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+  <aside class="admin-sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-nome">Caio Ricson</span>
+      <span class="logo-sub">Painel</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="/admin" class="sidebar-link">Serviços</a>
+      <a href="/" class="sidebar-link" target="_blank">Ver Site</a>
+    </nav>
+    <form action="/auth/logout" method="POST" class="sidebar-logout">
+      <button type="submit" class="btn-logout">Sair</button>
+    </form>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 class="admin-titulo"><%= servico ? 'Editar Serviço' : 'Novo Serviço' %></h1>
+      <a href="/admin" class="btn btn-secundario">← Voltar</a>
+    </div>
+
+    <% if (erro) { %>
+      <div class="alerta alerta-erro"><%= erro %></div>
+    <% } %>
+
+    <div class="admin-form-card">
+      <form action="/admin/servicos/<%= servico ? 'editar/' + servico.id : 'novo' %>" method="POST" class="contato-form">
+        <div class="campo">
+          <label for="titulo">Título do serviço *</label>
+          <input type="text" id="titulo" name="titulo" required placeholder="Ex: Direito Trabalhista" value="<%= servico ? servico.titulo : '' %>">
+        </div>
+        <div class="campo">
+          <label for="area">Área jurídica *</label>
+          <select id="area" name="area" required>
+            <option value="">Selecione uma área...</option>
+            <option value="Cível" <%= servico && servico.area === 'Cível' ? 'selected' : '' %>>Cível</option>
+            <option value="Família" <%= servico && servico.area === 'Família' ? 'selected' : '' %>>Família</option>
+            <option value="Criminal" <%= servico && servico.area === 'Criminal' ? 'selected' : '' %>>Criminal</option>
+            <option value="Trabalhista" <%= servico && servico.area === 'Trabalhista' ? 'selected' : '' %>>Trabalhista</option>
+            <option value="Outro" <%= servico && servico.area === 'Outro' ? 'selected' : '' %>>Outro</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="descricao">Descrição *</label>
+          <textarea id="descricao" name="descricao" rows="5" required placeholder="Descreva o serviço oferecido..."><%= servico ? servico.descricao : '' %></textarea>
+        </div>
+        <div class="form-acoes">
+          <button type="submit" class="btn btn-primario"><%= servico ? 'Salvar alterações' : 'Cadastrar serviço' %></button>
+          <a href="/admin" class="btn btn-secundario">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
