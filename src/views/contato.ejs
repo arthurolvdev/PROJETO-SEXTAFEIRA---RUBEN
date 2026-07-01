@@ -1,0 +1,77 @@
+<%- include('partials/header', { titulo: 'Contato' }) %>
+
+<section class="page-hero">
+  <div class="container">
+    <p class="secao-eyebrow">Fale conosco</p>
+    <h1 class="page-titulo">Entre em Contato</h1>
+  </div>
+</section>
+
+<section class="contato-secao">
+  <div class="container contato-grid">
+    <div class="contato-info">
+      <h2>Agende sua consulta</h2>
+      <p>Preencha o formulário ou entre em contato diretamente pelos canais abaixo. Respondemos em até 24 horas úteis.</p>
+
+      <div class="info-item">
+        <span class="info-icone">📧</span>
+        <div>
+          <strong>E-mail</strong>
+          <p>caioricsonadv@gmail.com</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="info-icone">📱</span>
+        <div>
+          <strong>WhatsApp</strong>
+          <p>(61) 99536-5177</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="info-icone">📍</span>
+        <div>
+          <strong>Endereço</strong>
+          <p>Jardim Ingá <br>Luziânia - GO</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="info-icone">⏰</span>
+        <div>
+          <strong>Horário</strong>
+          <p>Segunda a Sexta: 8h às 18h</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="contato-form-area">
+      <% if (sucesso) { %>
+        <div class="alerta alerta-sucesso"><%= sucesso %></div>
+      <% } %>
+      <% if (erro) { %>
+        <div class="alerta alerta-erro"><%= erro %></div>
+      <% } %>
+
+      <form action="/contato" method="POST" class="contato-form">
+        <div class="campo">
+          <label for="nome">Nome completo *</label>
+          <input type="text" id="nome" name="nome" required placeholder="Seu nome">
+        </div>
+        <div class="campo">
+          <label for="email">E-mail *</label>
+          <input type="email" id="email" name="email" required placeholder="seu@email.com">
+        </div>
+        <div class="campo">
+          <label for="telefone">Telefone</label>
+          <input type="tel" id="telefone" name="telefone" placeholder="(XX) XXXXX-XXXX">
+        </div>
+        <div class="campo">
+          <label for="mensagem">Mensagem *</label>
+          <textarea id="mensagem" name="mensagem" rows="5" required placeholder="Descreva brevemente sua situação..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primario btn-full">Enviar Mensagem</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

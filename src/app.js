@@ -6,6 +6,7 @@ const SQLiteStore = require('connect-sqlite3')(session);
 const publicRoutes = require('./controllers/publicController');
 const adminRoutes = require('./controllers/adminController');
 const authRoutes = require('./controllers/authController');
+const processosRoutes = require('./controllers/processosController');
 
 const { initDb } = require('./models/db');
 
@@ -31,12 +32,13 @@ initDb();
 app.use('/', publicRoutes);
 app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
+app.use('/processos', processosRoutes);
 
 app.use((req, res) => {
   res.status(404).render('404');
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });

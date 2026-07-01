@@ -1,11 +1,29 @@
 const Database = require('better-sqlite3');
 const bcrypt = require('bcrypt');
 const path = require('path');
+const fs = require('fs');
 
-const DB_PATH = path.join(__dirname, '../../database/advocacia.db');
+const DB_DIR = path.join(__dirname, '../../database');
+const DB_PATH = path.join(DB_DIR, 'advocacia.db');
+
+if (!fs.existsSync(DB_DIR)) {
+  fs.mkdirSync(DB_DIR, { recursive: true });
+}
 
 function getDb() {
   return new Database(DB_PATH);
+}
+
+function gerarNumeroProcesso() {
+  const ano = new Date().getFullYear();
+  const random = Math.floor(Math.random() * 900000) + 100000;
+  return `${random}-${ano}`;
+}
+
+function calcularProximaAudiencia() {
+  const data = new Date();
+  data.setDate(data.getDate() + 45);
+  return data.toISOString().split('T')[0];
 }
 
 function initDb() {
@@ -34,6 +52,27 @@ function initDb() {
       nome TEXT NOT NULL,
       email TEXT NOT NULL UNIQUE,
       senha TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS processos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      numero TEXT NOT NULL UNIQUE,
+      cliente_nome TEXT NOT NULL,
+      cliente_cpf TEXT NOT NULL,
+      area TEXT NOT NULL,
+      descricao TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'Em andamento',
+      proxima_audiencia DATE,
+      criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS mensagens_processo (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      processo_id INTEGER NOT NULL,
+      autor TEXT NOT NULL,
+      mensagem TEXT NOT NULL,
+      enviado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (processo_id) REFERENCES processos(id)
     );
   `);
 
@@ -117,6 +156,69 @@ function getUserByEmail(email) {
   return row;
 }
 
+function getAllProcessos() {
+  const db = getDb();
+  const rows = db.prepare('SELECT * FROM processos ORDER BY criado_em DESC').all();
+  db.close();
+  return rows;
+}
+
+function getProcessoById(id) {
+  const db = getDb();
+  const row = db.prepare('SELECT * FROM processos WHERE id = ?').get(id);
+  db.close();
+  return row;
+}
+
+function getProcessoByCpf(cpf) {
+  const db = getDb();
+  const cpfLimpo = cpf.replace(/\D/g, '');
+  const rows = db.prepare("SELECT * FROM processos WHERE replace(replace(replace(cliente_cpf, '.', ''), '-', ''), '/', '') = ?").all(cpfLimpo);
+  db.close();
+  return rows;
+}
+
+function createProcesso(clienteNome, clienteCpf, area, descricao, status) {
+  const db = getDb();
+  let numero = gerarNumeroProcesso();
+  while (db.prepare('SELECT id FROM processos WHERE numero = ?').get(numero)) {
+    numero = gerarNumeroProcesso();
+  }
+  const proximaAudiencia = calcularProximaAudiencia();
+  const result = db.prepare('INSERT INTO processos (numero, cliente_nome, cliente_cpf, area, descricao, status, proxima_audiencia) VALUES (?, ?, ?, ?, ?, ?, ?)').run(numero, clienteNome, clienteCpf, area, descricao, status || 'Em andamento', proximaAudiencia);
+  db.close();
+  return result;
+}
+
+function updateProcesso(id, clienteNome, clienteCpf, area, descricao, status, proximaAudiencia) {
+  const db = getDb();
+  const result = db.prepare('UPDATE processos SET cliente_nome = ?, cliente_cpf = ?, area = ?, descricao = ?, status = ?, proxima_audiencia = ? WHERE id = ?').run(clienteNome, clienteCpf, area, descricao, status, proximaAudiencia, id);
+  db.close();
+  return result;
+}
+
+function deleteProcesso(id) {
+  const db = getDb();
+  db.prepare('DELETE FROM mensagens_processo WHERE processo_id = ?').run(id);
+  const result = db.prepare('DELETE FROM processos WHERE id = ?').run(id);
+  db.close();
+  return result;
+}
+
+function getMensagensByProcesso(processoId) {
+  const db = getDb();
+  const rows = db.prepare('SELECT * FROM mensagens_processo WHERE processo_id = ? ORDER BY enviado_em ASC').all(processoId);
+  db.close();
+  return rows;
+}
+
+function saveMensagemProcesso(processoId, autor, mensagem) {
+  const db = getDb();
+  const result = db.prepare('INSERT INTO mensagens_processo (processo_id, autor, mensagem) VALUES (?, ?, ?)').run(processoId, autor, mensagem);
+  db.close();
+  return result;
+}
+
 module.exports = {
   initDb,
   getAllServicos,
@@ -127,5 +229,13 @@ module.exports = {
   deleteServico,
   saveContato,
   getAllContatos,
-  getUserByEmail
+  getUserByEmail,
+  getAllProcessos,
+  getProcessoById,
+  getProcessoByCpf,
+  createProcesso,
+  updateProcesso,
+  deleteProcesso,
+  getMensagensByProcesso,
+  saveMensagemProcesso
 };

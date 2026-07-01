@@ -1,0 +1,63 @@
+<%- include('../partials/header', { titulo: 'Meu Processo' }) %>
+
+<section class="page-hero">
+  <div class="container">
+    <p class="secao-eyebrow">Área do Cliente</p>
+    <h1 class="page-titulo">Consultar Processo</h1>
+  </div>
+</section>
+
+<section class="consulta-secao">
+  <div class="container consulta-wrap">
+    <div class="consulta-box">
+      <h2>Acompanhe seu processo</h2>
+      <p>Digite seu CPF para visualizar o andamento do seu caso e trocar mensagens com o advogado.</p>
+
+      <form action="/processos" method="POST" class="contato-form">
+        <div class="campo">
+          <label for="cpf">CPF do cliente</label>
+          <input type="text" id="cpf" name="cpf" required placeholder="000.000.000-00" value="<%= cpf %>">
+        </div>
+        <button type="submit" class="btn btn-primario btn-full">Consultar</button>
+      </form>
+
+      <% if (erro) { %>
+        <div class="alerta alerta-erro" style="margin-top: 20px"><%= erro %></div>
+      <% } %>
+    </div>
+
+    <% if (processos && processos.length > 0) { %>
+    <div class="processos-resultado">
+      <h3 class="resultado-titulo">Processos encontrados (<%= processos.length %>)</h3>
+      <% processos.forEach(p => { %>
+      <div class="processo-card">
+        <div class="processo-card-header">
+          <div>
+            <span class="processo-numero">Nº <%= p.numero %></span>
+            <span class="badge-status badge-status--<%= p.status.toLowerCase().replace(/ /g, '-') %>"><%= p.status %></span>
+          </div>
+          <span class="processo-area"><%= p.area %></span>
+        </div>
+        <h4 class="processo-cliente"><%= p.cliente_nome %></h4>
+        <p class="processo-desc"><%= p.descricao %></p>
+        <div class="processo-footer">
+          <div class="processo-info-item">
+            <span class="processo-info-label">Próxima audiência</span>
+            <span class="processo-info-valor">
+              <% if (p.proxima_audiencia) { %>
+                <%= new Date(p.proxima_audiencia + 'T12:00:00').toLocaleDateString('pt-BR') %>
+              <% } else { %>
+                A definir
+              <% } %>
+            </span>
+          </div>
+          <a href="/processos/<%= p.id %>" class="btn btn-secundario">Ver detalhes e mensagens →</a>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

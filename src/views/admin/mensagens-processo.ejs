@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mensagens | Caio Ricson</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+  <aside class="admin-sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-nome">Caio Ricson</span>
+      <span class="logo-sub">Painel</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="/admin" class="sidebar-link">Dashboard</a>
+      <a href="/" class="sidebar-link" target="_blank">Ver Site</a>
+    </nav>
+    <form action="/auth/logout" method="POST" class="sidebar-logout">
+      <button type="submit" class="btn-logout">Sair</button>
+    </form>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 class="admin-titulo">Mensagens — Processo Nº <%= processo.numero %></h1>
+      <a href="/admin" class="btn btn-secundario">← Voltar</a>
+    </div>
+
+    <div class="admin-form-card" style="max-width: 760px">
+      <p style="color: var(--cinza); font-size: 14px; margin-bottom: 4px">Cliente: <strong style="color: var(--branco)"><%= processo.cliente_nome %></strong></p>
+      <p style="color: var(--cinza); font-size: 14px; margin-bottom: 24px">Status: <span class="badge-status"><%= processo.status %></span></p>
+
+      <div class="mensagens-lista" style="margin-bottom: 32px">
+        <% if (mensagens.length === 0) { %>
+          <p class="sem-resultados">Nenhuma mensagem ainda.</p>
+        <% } %>
+        <% mensagens.forEach(m => { %>
+        <div class="mensagem-item mensagem-item--<%= m.autor === 'Advogado' ? 'advogado' : 'cliente' %>">
+          <div class="mensagem-autor"><%= m.autor === 'Advogado' ? '⚖️ Você (Advogado)' : '👤 ' + m.autor %></div>
+          <div class="mensagem-texto"><%= m.mensagem %></div>
+          <div class="mensagem-data"><%= new Date(m.enviado_em).toLocaleString('pt-BR') %></div>
+        </div>
+        <% }) %>
+      </div>
+
+      <form action="/admin/processos/<%= processo.id %>/responder" method="POST" class="contato-form">
+        <div class="campo">
+          <label for="mensagem">Responder ao cliente</label>
+          <textarea id="mensagem" name="mensagem" rows="4" required placeholder="Digite sua resposta..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primario">Enviar resposta</button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

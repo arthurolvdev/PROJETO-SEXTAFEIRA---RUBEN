@@ -4,17 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= typeof titulo !== 'undefined' ? titulo + ' | ' : '' %>Caio Ricson Advocacia</title>
-
-  <!-- CSS base (sempre carregado) -->
-  <link rel="stylesheet" href="/css/pages/base.css">
-  <link rel="stylesheet" href="/css/pages/header.css">
-  <link rel="stylesheet" href="/css/pages/footer.css">
-
-  <!-- CSS específico da página -->
-  <% if (typeof paginaCSS !== 'undefined') { %>
-    <link rel="stylesheet" href="/css/pages/<%= paginaCSS %>">
-  <% } %>
-
+  <link rel="stylesheet" href="/css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
@@ -27,8 +17,11 @@
       </a>
       <nav class="nav">
         <a href="/">Início</a>
-        <a href="/sobre">sobre
-     </nav>
+        <a href="/sobre">Sobre</a>
+        <a href="/servicos">Serviços</a>
+        <a href="/contato">Contato</a>
+        <a href="/processos" class="nav-destaque">Meu Processo</a>
+      </nav>
       <button class="menu-toggle" onclick="document.querySelector('.nav').classList.toggle('open')">&#9776;</button>
     </div>
   </header>

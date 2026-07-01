@@ -1,0 +1,37 @@
+<%- include('partials/header', { titulo: 'Serviços' }) %>
+
+<section class="page-hero">
+  <div class="container">
+    <p class="secao-eyebrow">O que fazemos</p>
+    <h1 class="page-titulo">Serviços Jurídicos</h1>
+  </div>
+</section>
+
+<section class="secao-servicos secao-servicos--pagina">
+  <div class="container">
+    <% if (servicos.length === 0) { %>
+      <p class="sem-resultados">Nenhum serviço cadastrado no momento.</p>
+    <% } else { %>
+      <div class="grid-servicos">
+        <% servicos.forEach(s => { %>
+        <div class="card-servico">
+          <div class="card-area"><%= s.area %></div>
+          <h3 class="card-titulo"><%= s.titulo %></h3>
+          <p class="card-desc"><%= s.descricao %></p>
+          <a href="/contato" class="card-link">Consultar &rarr;</a>
+        </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<section class="secao-cta">
+  <div class="container cta-inner">
+    <h2>Tem dúvidas sobre seu caso?</h2>
+    <p>Entre em contato para uma análise inicial gratuita e sem compromisso.</p>
+    <a href="/contato" class="btn btn-primario">Falar com o Advogado</a>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

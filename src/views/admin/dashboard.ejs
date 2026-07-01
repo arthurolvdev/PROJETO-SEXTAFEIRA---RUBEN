@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Painel Admin | Caio Ricson Advocacia</title>
-  <link rel="stylesheet" href="/css/pages/base.css">
-  <link rel="stylesheet" href="/css/pages/admin.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body class="admin-body">
   <aside class="admin-sidebar">
@@ -15,7 +15,7 @@
       <span class="logo-sub">Painel</span>
     </div>
     <nav class="sidebar-nav">
-      <a href="/admin" class="sidebar-link ativo">Serviços</a>
+      <a href="/admin" class="sidebar-link ativo">Dashboard</a>
       <a href="/" class="sidebar-link" target="_blank">Ver Site</a>
     </nav>
     <form action="/auth/logout" method="POST" class="sidebar-logout">
@@ -25,18 +25,18 @@
 
   <main class="admin-main">
     <div class="admin-topbar">
-      <h1 class="admin-titulo">Gerenciar Serviços</h1>
+      <h1 class="admin-titulo">Painel Administrativo</h1>
       <span class="admin-usuario">Olá, <%= userName %></span>
     </div>
+
+    <h2 class="admin-subtitulo" style="margin-top:0">Serviços</h2>
 
     <div class="admin-acoes">
       <a href="/admin/servicos/novo" class="btn btn-primario">+ Novo Serviço</a>
       <form action="/admin/servicos/buscar" method="GET" class="busca-form">
         <input type="text" name="q" placeholder="Buscar serviço..." value="<%= busca %>" class="busca-input">
         <button type="submit" class="btn btn-secundario">Buscar</button>
-        <% if (busca) { %>
-          <a href="/admin" class="btn-limpar">Limpar</a>
-        <% } %>
+        <% if (busca) { %><a href="/admin" class="btn-limpar">Limpar</a><% } %>
       </form>
     </div>
 
@@ -47,12 +47,7 @@
     <div class="admin-tabela-wrap">
       <table class="admin-tabela">
         <thead>
-          <tr>
-            <th>Título</th>
-            <th>Área</th>
-            <th>Descrição</th>
-            <th>Ações</th>
-          </tr>
+          <tr><th>Título</th><th>Área</th><th>Descrição</th><th>Ações</th></tr>
         </thead>
         <tbody>
           <% if (servicos.length === 0) { %>
@@ -75,8 +70,47 @@
       </table>
     </div>
 
+    <h2 class="admin-subtitulo">Processos (<%= processos.length %>)</h2>
+
+    <div class="admin-acoes">
+      <a href="/admin/processos/novo" class="btn btn-primario">+ Novo Processo</a>
+    </div>
+
+    <div class="admin-tabela-wrap">
+      <table class="admin-tabela">
+        <thead>
+          <tr><th>Nº Processo</th><th>Cliente</th><th>Área</th><th>Status</th><th>Audiência</th><th>Ações</th></tr>
+        </thead>
+        <tbody>
+          <% if (processos.length === 0) { %>
+            <tr><td colspan="6" class="sem-resultados">Nenhum processo cadastrado.</td></tr>
+          <% } %>
+          <% processos.forEach(p => { %>
+          <tr>
+            <td style="color: var(--dourado); font-size:13px"><%= p.numero %></td>
+            <td><strong><%= p.cliente_nome %></strong></td>
+            <td><span class="badge-area"><%= p.area %></span></td>
+            <td><span class="badge-status badge-status--<%= p.status.toLowerCase().replace(/ /g, '-') %>"><%= p.status %></span></td>
+            <td style="font-size:13px; color: var(--cinza)">
+              <% if (p.proxima_audiencia) { %>
+                <%= new Date(p.proxima_audiencia + 'T12:00:00').toLocaleDateString('pt-BR') %>
+              <% } else { %>A definir<% } %>
+            </td>
+            <td class="td-acoes">
+              <a href="/admin/processos/<%= p.id %>/mensagens" class="btn-tabela btn-editar">Mensagens</a>
+              <a href="/admin/processos/editar/<%= p.id %>" class="btn-tabela btn-editar">Editar</a>
+              <form action="/admin/processos/excluir/<%= p.id %>" method="POST" style="display:inline" onsubmit="return confirm('Excluir este processo?')">
+                <button type="submit" class="btn-tabela btn-excluir">Excluir</button>
+              </form>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
     <div class="admin-contatos">
-      <h2 class="admin-subtitulo">Mensagens Recebidas (<%= contatos.length %>)</h2>
+      <h2 class="admin-subtitulo">Mensagens de Contato (<%= contatos.length %>)</h2>
       <% if (contatos.length === 0) { %>
         <p class="sem-resultados">Nenhuma mensagem recebida ainda.</p>
       <% } else { %>
@@ -87,7 +121,7 @@
               <strong><%= c.nome %></strong>
               <span class="contato-data"><%= new Date(c.recebido_em).toLocaleDateString('pt-BR') %></span>
             </div>
-            <p class="contato-email"><%= c.email %> <% if (c.telefone) { %> · <%= c.telefone %><% } %></p>
+            <p class="contato-email"><%= c.email %><% if (c.telefone) { %> · <%= c.telefone %><% } %></p>
             <p class="contato-msg"><%= c.mensagem %></p>
           </div>
           <% }) %>

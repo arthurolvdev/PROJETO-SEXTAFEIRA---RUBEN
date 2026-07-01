@@ -1,4 +1,4 @@
-<%- include('partials/header', { titulo: 'Início', paginaCSS: 'home.css' }) %>
+<%- include('partials/header', { titulo: 'Início' }) %>
 
 <section class="hero">
   <div class="container hero-inner">
@@ -6,10 +6,14 @@
       <p class="hero-eyebrow">Escritório de Advocacia</p>
       <h1 class="hero-titulo">Defesa comprometida.<br>Resultados concretos.</h1>
       <p class="hero-desc">Atuação estratégica nas áreas cível, família e criminal. Cada caso tratado com dedicação individual e expertise jurídica.</p>
+      <div class="hero-acoes">
+        <a href="/contato" class="btn btn-primario">Fale com o Advogado</a>
+        <a href="/servicos" class="btn btn-secundario">Ver Serviços</a>
+      </div>
     </div>
     <div class="hero-detalhe">
       <div class="hero-card">
-        <span class="hero-card-num">+2</span>
+        <span class="hero-card-num">+10</span>
         <span class="hero-card-label">Anos de experiência</span>
       </div>
       <div class="hero-card">
@@ -21,6 +25,33 @@
         <span class="hero-card-label">Comprometimento</span>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="secao-servicos">
+  <div class="container">
+    <div class="secao-cabecalho">
+      <p class="secao-eyebrow">Expertise Jurídica</p>
+      <h2 class="secao-titulo">Áreas de Atuação</h2>
+    </div>
+    <div class="grid-servicos">
+      <% servicos.forEach(s => { %>
+      <div class="card-servico">
+        <div class="card-area"><%= s.area %></div>
+        <h3 class="card-titulo"><%= s.titulo %></h3>
+        <p class="card-desc"><%= s.descricao %></p>
+        <a href="/contato" class="card-link">Consultar &rarr;</a>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="secao-cta">
+  <div class="container cta-inner">
+    <h2>Precisa de orientação jurídica?</h2>
+    <p>Entre em contato para agendar uma consulta. Análise inicial do seu caso com discrição e profissionalismo.</p>
+    <a href="/contato" class="btn btn-primario">Agendar Consulta</a>
   </div>
 </section>
 

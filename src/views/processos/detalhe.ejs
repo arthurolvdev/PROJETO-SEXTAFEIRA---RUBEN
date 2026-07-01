@@ -1,0 +1,87 @@
+<%- include('../partials/header', { titulo: 'Processo ' + processo.numero }) %>
+
+<section class="page-hero">
+  <div class="container">
+    <p class="secao-eyebrow">Área do Cliente</p>
+    <h1 class="page-titulo">Processo Nº <%= processo.numero %></h1>
+  </div>
+</section>
+
+<section class="detalhe-secao">
+  <div class="container detalhe-wrap">
+
+    <div class="detalhe-card">
+      <div class="detalhe-header">
+        <div>
+          <span class="badge-status badge-status--<%= processo.status.toLowerCase().replace(/ /g, '-') %>"><%= processo.status %></span>
+          <span class="processo-area" style="margin-left: 12px"><%= processo.area %></span>
+        </div>
+        <a href="/processos" class="btn btn-secundario" style="font-size:13px;padding:8px 20px">← Voltar</a>
+      </div>
+
+      <div class="detalhe-grid">
+        <div class="detalhe-item">
+          <span class="detalhe-label">Cliente</span>
+          <span class="detalhe-valor"><%= processo.cliente_nome %></span>
+        </div>
+        <div class="detalhe-item">
+          <span class="detalhe-label">Número do Processo</span>
+          <span class="detalhe-valor"><%= processo.numero %></span>
+        </div>
+        <div class="detalhe-item">
+          <span class="detalhe-label">Área</span>
+          <span class="detalhe-valor"><%= processo.area %></span>
+        </div>
+        <div class="detalhe-item">
+          <span class="detalhe-label">Próxima Audiência (previsão)</span>
+          <span class="detalhe-valor">
+            <% if (processo.proxima_audiencia) { %>
+              <%= new Date(processo.proxima_audiencia + 'T12:00:00').toLocaleDateString('pt-BR') %>
+            <% } else { %>
+              A definir
+            <% } %>
+          </span>
+        </div>
+        <div class="detalhe-item detalhe-item--full">
+          <span class="detalhe-label">Descrição do Caso</span>
+          <span class="detalhe-valor"><%= processo.descricao %></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mensagens-area">
+      <h2 class="mensagens-titulo">Mensagens</h2>
+
+      <% if (sucesso) { %>
+        <div class="alerta alerta-sucesso"><%= sucesso %></div>
+      <% } %>
+      <% if (erro) { %>
+        <div class="alerta alerta-erro"><%= erro %></div>
+      <% } %>
+
+      <div class="mensagens-lista">
+        <% if (mensagens.length === 0) { %>
+          <p class="sem-resultados">Nenhuma mensagem ainda. Envie uma mensagem ao advogado abaixo.</p>
+        <% } %>
+        <% mensagens.forEach(m => { %>
+        <div class="mensagem-item mensagem-item--<%= m.autor === 'Advogado' ? 'advogado' : 'cliente' %>">
+          <div class="mensagem-autor"><%= m.autor === 'Advogado' ? '⚖️ Dr. Caio Ricson' : '👤 ' + m.autor %></div>
+          <div class="mensagem-texto"><%= m.mensagem %></div>
+          <div class="mensagem-data"><%= new Date(m.enviado_em).toLocaleString('pt-BR') %></div>
+        </div>
+        <% }) %>
+      </div>
+
+      <form action="/processos/<%= processo.id %>/mensagem" method="POST" class="contato-form mensagem-form">
+        <div class="campo">
+          <label for="mensagem">Enviar mensagem ao advogado</label>
+          <textarea id="mensagem" name="mensagem" rows="4" required placeholder="Digite sua dúvida ou atualização..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primario">Enviar mensagem</button>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
