@@ -65,3 +65,19 @@ http://localhost:3001/admin
 
 Email: admin@caioricson.com
 Senha: admin123
+
+
+
+*PROJETO OPEN WEB*
+
+
+https://projeto-sextafeira-robson-production.up.railway.app
+
+Projeto subiu pelo railway, o SQLite não faz a atualização. 
+É necessário entrar pelo link: 
+https://projeto-sextafeira-robson-production.up.railway.app/admin       (Tela de admin do projeto, com dashboards e cadastro de processos, CRUD completo + análise dos casos)
+Logar com email e senha acima.
+Cadastrar processos. 
+
+No campo de mensagens, também é possível detectar as mensagens encaminhada pelo link do admin.
+A intenção, é o projeto escalar para que em mais ou menos 15 dias seja comprado o dominio definitivo e o site tenha uso real. 
