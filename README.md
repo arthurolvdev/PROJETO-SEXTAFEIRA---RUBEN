@@ -1,4 +1,4 @@
-Caio Ricson Advocacia — Site Institucional
+Caio Ricson Advocacia |||| *Site Institucional*
 
 Projeto final da disciplina de Programação Web II, desenvolvido como site institucional para um escritório de advocacia real.
 
@@ -64,4 +64,4 @@ Acesso ao painel
 http://localhost:3001/admin
 
 Email: admin@caioricson.com
-Senha: Caio@123
+Senha: admin123
