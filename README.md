@@ -61,7 +61,7 @@ npm run dev
 Acesse em: http://localhost:3001
 
 Acesso ao painel
-http://localhost:3001
+http://localhost:3001/admin
 
 Email: admin@caioricson.com
 Senha: Caio@123
